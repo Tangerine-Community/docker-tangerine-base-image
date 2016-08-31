@@ -18,4 +18,4 @@ ENV ANDROID_BUILD_TOOLS_VERSION 23.0.3
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 ADD ./build-scripts/1-install-global-dependencies.sh /tangerine-server/build-scripts/1-install-global-dependencies.sh 
-
+RUN /tangerine-server/build-scripts/1-install-global-dependencies.sh
