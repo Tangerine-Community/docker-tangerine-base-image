@@ -46,7 +46,8 @@ RUN apt-get update && apt-get -y install \
     jq \
     libffi-dev \
     nginx \
-    gradle
+    gradle \
+    netcat-traditional
 
 # Install node and some node based services
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - \
