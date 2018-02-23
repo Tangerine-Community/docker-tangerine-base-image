@@ -53,7 +53,8 @@ RUN apt-get update && apt-get -y install \
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
   && apt-get -y install nodejs \
   && npm install -g pm2 \
-  && npm install -g bower
+  && npm install -g bower \
+  && npm install -g npm
 
 # Install Couchdb
 RUN apt-get -y install software-properties-common \
@@ -126,8 +127,7 @@ RUN cd /opt && \
 
 # Install Cordova
 RUN npm update && \
-    npm install -g npm && \
-    npm install -g cordova
+    npm install -g cordova@7.1.0
 
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
