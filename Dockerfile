@@ -172,7 +172,7 @@ ENV PATH="/opt/gradle/bin:${PATH}"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova@7.1.0 && \
+    npm install -g cordova@6.4.0 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
 
 # overwrite this with 'CMD []' in a dependent Dockerfile
