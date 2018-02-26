@@ -179,5 +179,20 @@ RUN npm update && \
     npm install -g cordova@6 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
 
+# create test app
+RUN cordova create hello com.example.hello HelloWorld
+
+WORKDIR /opt/hello
+
+RUN cordova platform add android@6.3.0
+RUN cordova plugin add cordova-plugin-whitelist --save
+RUN cordova plugin add cordova-plugin-geolocation --save
+RUN cordova plugin add cordova-plugin-camera --save
+RUN cordova plugin add cordova-plugin-crosswalk-webview --save
+
+RUN cordova build
+
+RUN echo `which gradle`
+
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
