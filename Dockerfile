@@ -152,10 +152,12 @@ RUN echo 84831b9409646a918e30573bab4c9c91346d8abd > $ANDROID_HOME/licenses/andro
 
 RUN sdkmanager "tools" "platform-tools"
 RUN sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
-RUN sdkmanager "platforms;android-26" "platforms;android-25" "platforms;android-24" "platforms;android-23"
+RUN sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
 RUN sdkmanager "platforms;android-22" "platforms;android-21" "platforms;android-20" "platforms;android-19"
 RUN sdkmanager "platforms;android-18" "platforms;android-17" "platforms;android-16" "platforms;android-15"
 RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
+
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
 
 # Install Gradle
 #RUN wget -q $GRADLE_URL -O gradle.zip \
