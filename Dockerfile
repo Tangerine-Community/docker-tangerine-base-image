@@ -158,19 +158,19 @@ RUN sdkmanager "platforms;android-18" "platforms;android-17" "platforms;android-
 RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 # Install Gradle
-RUN wget -q $GRADLE_URL -O gradle.zip \
- && unzip gradle.zip \
- && mv gradle-4.5.1 gradle \
-# && rm gradle.zip \
- && mkdir /root/.gradle
+#RUN wget -q $GRADLE_URL -O gradle.zip \
+# && unzip gradle.zip \
+# && mv gradle-4.5.1 gradle \
+## && rm gradle.zip \
+# && mkdir /root/.gradle
 
 # Support Gradle
-ENV GRADLE_HOME /opt/gradle
+#ENV GRADLE_HOME /opt/gradle
 ENV JAVA_OPTS "-Xms512m -Xmx1536m"
-ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
-ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
+#ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
+#ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
-ENV PATH="/opt/gradle/bin:${PATH}"
+#ENV PATH="/opt/gradle/bin:${PATH}"
 
 # Install Cordova and other useful globals
 RUN npm update && \
