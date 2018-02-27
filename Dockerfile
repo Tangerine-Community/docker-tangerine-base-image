@@ -19,20 +19,19 @@ ENV TERM linux
 ENV JAVA_VERSION_MAJOR=8 \
     JAVA_VERSION_MINOR=162 \
     JAVA_VERSION_BUILD=12 \
-    JAVA_PACKAGE=server-jre \
-    JAVA_JCE=unlimited \
+    JAVA_PACKAGE=jdk \
+    JAVA_JCE=standard \
     JAVA_HOME=/opt/jdk \
     PATH=${PATH}:/opt/jdk/bin \
     GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
     GLIBC_VERSION=2.27-r0 \
     LANG=C.UTF-8
 
-# Credit: https://hub.docker.com/r/anapsix/alpine-java/~/dockerfile/
 # do all in one step
 RUN set -ex && \
     [[ ${JAVA_VERSION_MAJOR} != 7 ]] || ( echo >&2 'Oracle no longer publishes JAVA7 packages' && exit 1 ) && \
     apk -U upgrade && \
-    apk add libstdc++ curl ca-certificates bash java-cacerts && \
+    apk add libstdc++ curl ca-certificates bash && \
     for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION} glibc-i18n-${GLIBC_VERSION}; do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
     apk add --allow-untrusted /tmp/*.apk && \
     rm -v /tmp/*.apk && \
@@ -47,17 +46,19 @@ RUN set -ex && \
     gunzip /tmp/java.tar.gz && \
     tar -C /opt -xf /tmp/java.tar && \
     ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk && \
-    find /opt/jdk/ -maxdepth 1 -mindepth 1 | grep -v jre | xargs rm -rf && \
-    cd /opt/jdk/ && ln -s ./jre/bin ./bin && \
-    if [ "${JAVA_JCE}" == "unlimited" ]; then echo "Installing Unlimited JCE policy" && \
+    if [ "${JAVA_JCE}" == "unlimited" ]; then echo "Installing Unlimited JCE policy" >&2 && \
       curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip \
         http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip && \
       cd /tmp && unzip /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip && \
-      cp -v /tmp/UnlimitedJCEPolicyJDK8/*.jar /opt/jdk/jre/lib/security/; \
+      cp -v /tmp/UnlimitedJCEPolicyJDK8/*.jar /opt/jdk/jre/lib/security; \
     fi && \
     sed -i s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=10/ $JAVA_HOME/jre/lib/security/java.security && \
     apk del curl glibc-i18n && \
-    rm -rf /opt/jdk/jre/plugin \
+    rm -rf /opt/jdk/*src.zip \
+           /opt/jdk/lib/missioncontrol \
+           /opt/jdk/lib/visualvm \
+           /opt/jdk/lib/*javafx* \
+           /opt/jdk/jre/plugin \
            /opt/jdk/jre/bin/javaws \
            /opt/jdk/jre/bin/jjs \
            /opt/jdk/jre/bin/orbd \
@@ -85,7 +86,6 @@ RUN set -ex && \
            /opt/jdk/jre/lib/oblique-fonts \
            /opt/jdk/jre/lib/plugin.jar \
            /tmp/* /var/cache/apk/* && \
-    ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/jre/lib/security/cacerts && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
 # Define commonly used JAVA_HOME variable
