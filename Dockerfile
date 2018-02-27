@@ -104,6 +104,7 @@ RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
 WORKDIR /opt
 
 RUN apk add --no-cache curl
+RUN apk add --update openssl
 
 # Download Android SDK
 RUN mkdir "$SDK_HOME" .android \
@@ -150,19 +151,25 @@ RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
 RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 
+WORKDIR /opt
+
 # Install Gradle
 ENV GRADLE_URL https://services.gradle.org/distributions/gradle-3.3-all.zip
-RUN wget -q $GRADLE_URL -O gradle.zip \
- && unzip gradle.zip \
- && mv gradle-3.3 gradle \
- && rm gradle.zip
+RUN wget -q $GRADLE_URL -O gradle.zip
+RUN unzip -qq gradle.zip
+RUN ln -s gradle-3.3 gradle
+RUN mkdir /root/.gradle
 
-ENV GRADLE_HOME "/opt/gradle"
-ENV PATH="${PATH}:${GRADLE_HOME}"
+#  Support Gradle
+ENV GRADLE_HOME /opt/gradle
+ENV PATH="${PATH}:${GRADLE_HOME}/bin"
+RUN echo "PATH: $PATH"
+RUN echo `which gradle`
+ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
+
+WORKDIR /opt/hello
 
 RUN cordova build
-
-RUN echo `which gradle`
 
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
