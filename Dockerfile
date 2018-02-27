@@ -150,9 +150,6 @@ RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
 RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 
-RUN curl -s "https://get.sdkman.io" | bash
-RUN sdk install gradle 3.3
-
 # Install Gradle
 ENV GRADLE_URL https://services.gradle.org/distributions/gradle-3.3-all.zip
 RUN wget -q $GRADLE_URL -O gradle.zip \
