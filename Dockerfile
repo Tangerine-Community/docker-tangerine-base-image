@@ -150,6 +150,8 @@ RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
 RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 
+curl -s "https://get.sdkman.io" | bash
+sdk install gradle 3.3
 RUN cordova build
 
 RUN echo `which gradle`
