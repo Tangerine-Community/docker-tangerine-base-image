@@ -44,7 +44,6 @@ RUN apt-get update && apt-get -y install \
     jq \
     libffi-dev \
     nginx \
-    gradle \
     netcat-traditional
 
 # Install node and some node based services
@@ -78,31 +77,13 @@ RUN apt-get install build-essential python-dev -y \
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
   && curl -L https://get.rvm.io | bash -s stable \
   && /bin/bash -l -c "rvm requirements" \
-  && /bin/bash -l -c "rvm install ruby-2.2.0" \
-  && /bin/bash -l -c "rvm install ruby-2.2.0-dev" \
-  && /bin/bash -l -c "rvm --default use ruby-2.2.0" \
+  && /bin/bash -l -c "rvm install ruby-2.4.3" \
+  && /bin/bash -l -c "rvm install ruby-2.4.3-dev" \
+  && /bin/bash -l -c "rvm --default use ruby-2.4.3" \
   && /bin/bash -c "source /usr/local/rvm/bin/rvm && gem install bundler --no-ri --no-rdoc "
-ENV PATH /usr/local/rvm/rubies/ruby-2.2.0/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV GEM_PATH /usr/local/rvm/rubies/ruby-2.2.0
-ENV GEM_HOME /usr/local/rvm/rubies/ruby-2.2.0
-
-## Prepare to install Android Build Tools
-#ENV GRADLE_OPTS -Dorg.gradle.jvmargs=-Xmx2048m
-#ENV ANDROID_SDK_VERSION 26.0.2
-#ENV ANDROID_API_LEVEL 26
-##ENV ANDROID_BUILD_TOOLS_VERSION 26.0.2
-##ENV ANDROID_SDK_FILENAME android-sdk_r24.4.1-linux.tgz
-#ENV ANDROID_SDK_DIST tools_r${ANDROID_SDK_VERSION}-linux.zip
-##ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
-#ENV ANDROID_SDK_URL http://dl.google.com/android/repository/${ANDROID_SDK_DIST}
-##http://dl.google.com/android/repository/tools_r25.2.2-linux.zip
-## Support from Ice Cream Sandwich, 4.0.3 - 4.0.4, to Marshmallow version 6.0
-#ENV ANDROID_API_LEVELS android-15,android-16,android-17,android-18,android-19,android-20,android-21,android-22,android-23,android-24,android-25,android-26
-## https://developer.android.com/studio/releases/build-tools.html
-#ENV ANDROID_BUILD_TOOLS_VERSION 27.0.3
-##ENV ANDROID_HOME /opt/android-sdk-linux
-#ENV SDK_HOME /opt/android-sdk
-##ENV PATH ${PATH}:${SDK_HOME}/tools:${SDK_HOME}/platform-tools
+ENV PATH /usr/local/rvm/rubies/ruby-2.4.3/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV GEM_PATH /usr/local/rvm/rubies/ruby-2.4.3
+ENV GEM_HOME /usr/local/rvm/rubies/ruby-2.4.3
 
 RUN \
   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
@@ -115,19 +96,11 @@ RUN \
 # Define commonly used JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
-# Install Android SDK
-
-#RUN cd /opt && \
-#    wget -q $ANDROID_SDK_URL && \
-#    unzip $ANDROID_SDK_DIST -d $SDK_HOME && \
-#    rm $ANDROID_SDK_DIST && \
-#    echo y | android update sdk --no-ui -a --filter tools,platform-tools,$ANDROID_API_LEVELS,build-tools-$ANDROID_BUILD_TOOLS_VERSION,extra-android-support,extra-android-m2repository
-
 # Set up environment variables
 ENV SDK_HOME /opt/android-sdk
 ENV ANDROID_HOME /opt/android-sdk
 ENV SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.5.1-all.zip
+#ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.5.1-all.zip
 ENV ANDROID_BUILD_TOOLS_VERSION 27.0.3
 
 RUN echo "SDK_HOME: $SDK_HOME"
@@ -159,20 +132,9 @@ RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
 
-# Install Gradle
-#RUN wget -q $GRADLE_URL -O gradle.zip \
-# && unzip gradle.zip \
-# && mv gradle-4.5.1 gradle \
-## && rm gradle.zip \
-# && mkdir /root/.gradle
-
 # Support Gradle
-#ENV GRADLE_HOME /opt/gradle
 ENV JAVA_OPTS "-Xms512m -Xmx1536m"
 #ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
-#ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
-
-#ENV PATH="/opt/gradle/bin:${PATH}"
 
 # Install Cordova and other useful globals
 RUN npm update && \
