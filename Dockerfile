@@ -1,100 +1,95 @@
-FROM ubuntu:16.04
+FROM node:alpine
 
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
 
 # Never ask for confirmations
-ENV DEBIAN_FRONTEND noninteractive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+#ENV DEBIAN_FRONTEND noninteractive
+#RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Install some core utilities
-RUN apt-get update && apt-get -y install \
-    software-properties-common \
-    python-software-properties \
-    bzip2 unzip \
-    openssh-client \
-    git \
-    lib32stdc++6 \
-    lib32z1 \
-    curl \
-    wget \
-    vim \
-    nano \
-    links \
-    rsync \
-    bc \
-    git \
-    git-core \
-    apt-transport-https \
-    libxml2 \
-    libxml2-dev \
-    libcurl4-openssl-dev \
-    openssl \
-    sqlite3 \
-    libsqlite3-dev \
-    gawk \
-    libreadline6-dev \
-    libyaml-dev \
-    autoconf \
-    libgdbm-dev \
-    libncurses5-dev \
-    automake \
-    libtool \
-    bison \
-    jq \
-    libffi-dev \
-    nginx \
-    netcat-traditional
+#RUN \
+#  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+#  add-apt-repository -y ppa:webupd8team/java && \
+#  apt-get update && \
+#  apt-get install -y oracle-java8-installer && \
+#  rm -rf /var/lib/apt/lists/* && \
+#  rm -rf /var/cache/oracle-jdk8-installer
 
-# Install node and some node based services
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-  && apt-get -y install nodejs \
-  && npm install -g pm2 \
-  && npm install -g bower \
-  && npm install -g npm
+# Java Version and other ENV
+ENV JAVA_VERSION_MAJOR=8 \
+    JAVA_VERSION_MINOR=162 \
+    JAVA_VERSION_BUILD=12 \
+    JAVA_PACKAGE=server-jre \
+    JAVA_JCE=unlimited \
+    JAVA_HOME=/opt/jdk \
+    PATH=${PATH}:/opt/jdk/bin \
+    GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
+    GLIBC_VERSION=2.27-r0 \
+    LANG=C.UTF-8
 
-# Install Couchdb
-RUN apt-get -y install software-properties-common \
-  && apt-add-repository -y ppa:couchdb/stable \
-  && apt-get update \
-  && apt-get -y install couchdb \
-  && chown -R couchdb:couchdb /usr/bin/couchdb /etc/couchdb /usr/share/couchdb \
-  && chmod -R 0770 /usr/bin/couchdb /etc/couchdb /usr/share/couchdb \
-  && mkdir /var/run/couchdb \
-  && chown -R couchdb /var/run/couchdb \
-  && sed -i -e "s#\[couch_httpd_auth\]#\[couch_httpd_auth\]\ntimeout=9999999#" /etc/couchdb/local.ini \
-  && sed -i 's#;bind_address = 127.0.0.1#bind_address = 0.0.0.0#' /etc/couchdb/local.ini \
-  && couchdb -k \
-  && couchdb -b
-
-# Install couchapp
-RUN apt-get install build-essential python-dev -y \
-  && curl -O https://bootstrap.pypa.io/get-pip.py \
-  && python get-pip.py \
-  && pip install couchapp
-
-## Install Ruby
-RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
-  && curl -L https://get.rvm.io | bash -s stable \
-  && /bin/bash -l -c "rvm requirements" \
-  && /bin/bash -l -c "rvm install ruby-2.4.3" \
-  && /bin/bash -l -c "rvm install ruby-2.4.3-dev" \
-  && /bin/bash -l -c "rvm --default use ruby-2.4.3" \
-  && /bin/bash -c "source /usr/local/rvm/bin/rvm && gem install bundler --no-ri --no-rdoc "
-ENV PATH /usr/local/rvm/rubies/ruby-2.4.3/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV GEM_PATH /usr/local/rvm/rubies/ruby-2.4.3
-ENV GEM_HOME /usr/local/rvm/rubies/ruby-2.4.3
-
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
+# Credit: https://hub.docker.com/r/anapsix/alpine-java/~/dockerfile/
+# do all in one step
+RUN set -ex && \
+    [[ ${JAVA_VERSION_MAJOR} != 7 ]] || ( echo >&2 'Oracle no longer publishes JAVA7 packages' && exit 1 ) && \
+    apk -U upgrade && \
+    apk add libstdc++ curl ca-certificates bash java-cacerts && \
+    for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION} glibc-i18n-${GLIBC_VERSION}; do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
+    apk add --allow-untrusted /tmp/*.apk && \
+    rm -v /tmp/*.apk && \
+    ( /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true ) && \
+    echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
+    /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib && \
+    curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
+      http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/0da788060d494f5095bf8624735fa2f1/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz && \
+    JAVA_PACKAGE_SHA256=$(curl -sSL https://www.oracle.com/webfolder/s/digest/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}checksum.html | grep -E "${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64\.tar\.gz" | grep -Eo '(sha256: )[^<]+' | cut -d: -f2 | xargs) && \
+    echo "${JAVA_PACKAGE_SHA256}  /tmp/java.tar.gz" > /tmp/java.tar.gz.sha256 && \
+    sha256sum -c /tmp/java.tar.gz.sha256 && \
+    gunzip /tmp/java.tar.gz && \
+    tar -C /opt -xf /tmp/java.tar && \
+    ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk && \
+    find /opt/jdk/ -maxdepth 1 -mindepth 1 | grep -v jre | xargs rm -rf && \
+    cd /opt/jdk/ && ln -s ./jre/bin ./bin && \
+    if [ "${JAVA_JCE}" == "unlimited" ]; then echo "Installing Unlimited JCE policy" && \
+      curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip \
+        http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip && \
+      cd /tmp && unzip /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip && \
+      cp -v /tmp/UnlimitedJCEPolicyJDK8/*.jar /opt/jdk/jre/lib/security/; \
+    fi && \
+    sed -i s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=10/ $JAVA_HOME/jre/lib/security/java.security && \
+    apk del curl glibc-i18n && \
+    rm -rf /opt/jdk/jre/plugin \
+           /opt/jdk/jre/bin/javaws \
+           /opt/jdk/jre/bin/jjs \
+           /opt/jdk/jre/bin/orbd \
+           /opt/jdk/jre/bin/pack200 \
+           /opt/jdk/jre/bin/policytool \
+           /opt/jdk/jre/bin/rmid \
+           /opt/jdk/jre/bin/rmiregistry \
+           /opt/jdk/jre/bin/servertool \
+           /opt/jdk/jre/bin/tnameserv \
+           /opt/jdk/jre/bin/unpack200 \
+           /opt/jdk/jre/lib/javaws.jar \
+           /opt/jdk/jre/lib/deploy* \
+           /opt/jdk/jre/lib/desktop \
+           /opt/jdk/jre/lib/*javafx* \
+           /opt/jdk/jre/lib/*jfx* \
+           /opt/jdk/jre/lib/amd64/libdecora_sse.so \
+           /opt/jdk/jre/lib/amd64/libprism_*.so \
+           /opt/jdk/jre/lib/amd64/libfxplugins.so \
+           /opt/jdk/jre/lib/amd64/libglass.so \
+           /opt/jdk/jre/lib/amd64/libgstreamer-lite.so \
+           /opt/jdk/jre/lib/amd64/libjavafx*.so \
+           /opt/jdk/jre/lib/amd64/libjfx*.so \
+           /opt/jdk/jre/lib/ext/jfxrt.jar \
+           /opt/jdk/jre/lib/ext/nashorn.jar \
+           /opt/jdk/jre/lib/oblique-fonts \
+           /opt/jdk/jre/lib/plugin.jar \
+           /tmp/* /var/cache/apk/* && \
+    ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/jre/lib/security/cacerts && \
+    echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
 # Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 # Set up environment variables
 ENV SDK_HOME /opt/android-sdk
@@ -107,6 +102,9 @@ RUN echo "SDK_HOME: $SDK_HOME"
 RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
 
 WORKDIR /opt
+
+RUN apk add --no-cache curl
+
 # Download Android SDK
 RUN mkdir "$SDK_HOME" .android \
  && cd "$SDK_HOME" \
