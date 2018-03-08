@@ -135,21 +135,6 @@ RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
 ENV JAVA_OPTS "-Xms512m -Xmx1536m"
 #ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
 
-# Install Cordova and other useful globals
-RUN npm update && \
-    npm install -g cordova@8.0.0 && \
-    npm install -g phantomjs-prebuilt --unsafe-perm
-
-# create test app
-RUN cordova create hello com.example.hello HelloWorld
-
-WORKDIR /opt/hello
-
-RUN cordova platform add android@7.0.0
-RUN cordova plugin add cordova-plugin-whitelist --save
-RUN cordova plugin add cordova-plugin-geolocation --save
-RUN cordova plugin add cordova-plugin-camera --save
-RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 
 WORKDIR /opt
 
@@ -166,6 +151,24 @@ ENV PATH="${PATH}:${GRADLE_HOME}/bin"
 RUN echo "PATH: $PATH"
 RUN echo `which gradle`
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
+
+# Install Cordova and other useful globals
+RUN npm update && \
+    npm install -g cordova@8.0.0 && \
+    npm install -g phantomjs-prebuilt --unsafe-perm
+
+# create test app
+RUN cordova create hello com.example.hello HelloWorld
+
+WORKDIR /opt/hello
+
+RUN cordova platform add android@7.0.0
+RUN cordova plugin add cordova-plugin-whitelist --save
+RUN cordova plugin add cordova-plugin-geolocation --save
+RUN cordova plugin add cordova-plugin-camera --save
+RUN cordova plugin add cordova-plugin-crosswalk-webview --save
+
+
 
 WORKDIR /opt/hello
 
