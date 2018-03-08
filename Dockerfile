@@ -137,7 +137,7 @@ ENV JAVA_OPTS "-Xms512m -Xmx1536m"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova@6 && \
+    npm install -g cordova@8.0.0 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
 
 # create test app
@@ -145,7 +145,7 @@ RUN cordova create hello com.example.hello HelloWorld
 
 WORKDIR /opt/hello
 
-RUN cordova platform add android@6.3.0
+RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
 RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
@@ -154,10 +154,10 @@ RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 WORKDIR /opt
 
 # Install Gradle
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-3.3-all.zip
+ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.6-all.zip
 RUN wget -q $GRADLE_URL -O gradle.zip
 RUN unzip -qq gradle.zip
-RUN ln -s gradle-3.3 gradle
+RUN ln -s gradle-4.6 gradle
 RUN mkdir /root/.gradle
 
 #  Support Gradle
