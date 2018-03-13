@@ -157,20 +157,15 @@ RUN npm update && \
     npm install -g cordova@8.0.0 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
 
-# create test app
-RUN cordova create hello com.example.hello HelloWorld
+ADD client/wrappers/apk /tangerine/client/wrappers/apk
 
-WORKDIR /opt/hello
+WORKDIR /tangerine/client/wrappers/apk
 
 RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
 RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
 RUN cordova plugin add cordova-plugin-crosswalk-webview --save
-
-
-
-WORKDIR /opt/hello
 
 RUN cordova build
 
