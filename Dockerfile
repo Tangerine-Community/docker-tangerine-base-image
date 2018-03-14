@@ -165,7 +165,6 @@ RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
 RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
-RUN cordova plugin add cordova-plugin-crosswalk-webview --save
 
 RUN cordova build
 
