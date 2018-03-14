@@ -165,6 +165,7 @@ RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
 RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
+RUN cordova plugin add https://github.com/floatinghotpot/cordova-httpd.git --save
 
 RUN cordova build
 
