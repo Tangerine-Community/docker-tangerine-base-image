@@ -168,31 +168,32 @@ RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
 
 # Support Gradle
 #ENV GRADLE_HOME /opt/gradle
+#ENV PATH="${PATH}:${GRADLE_HOME}/bin"
 ENV JAVA_OPTS "-Xms512m -Xmx1536m"
-#ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
+RUN echo "PATH: $PATH"
+#RUN echo `which gradle`
 #ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
 #ENV PATH="/opt/gradle/bin:${PATH}"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova@6 && \
+    npm install -g cordova@8.0.0 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
 
-# create test app
-RUN cordova create hello com.example.hello HelloWorld
+ADD client/wrappers/apk /tangerine-client/client/wrappers/apk
 
-WORKDIR /opt/hello
+WORKDIR /tangerine-client/client/wrappers/apk
 
-RUN cordova platform add android@6.3.0
+RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
 RUN cordova plugin add cordova-plugin-geolocation --save
 RUN cordova plugin add cordova-plugin-camera --save
+RUN cordova plugin add cordova-plugin-file --save
 RUN cordova plugin add cordova-plugin-crosswalk-webview --save
+RUN cordova plugin add cordova-android-support-gradle-release --save
 
 RUN cordova build
-
-RUN echo `which gradle`
 
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]

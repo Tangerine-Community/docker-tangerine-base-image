@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.rti.tangerine" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Tangerine</name>
+    <description>
+        Mobile data collection system.
+    </description>
+    <author email="ict-admin@rti.org" href="github.com/Tangerine-Community/Tangerine">
+        Tangerine dream team
+    </author>
+    <content src="index.html" />
+    <icon src="res/icon/icon.png" />
+    <access origin="*" />
+
+    <allow-navigation href="tangerinecentral.org" />
+    <allow-intent href="*" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+</widget>
