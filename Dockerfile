@@ -48,7 +48,7 @@ RUN apt-get update && apt-get -y install \
     netcat-traditional
 
 # Install node and some node based services
-RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   && apt-get -y install nodejs \
   && npm install -g pm2 \
   && npm install -g bower \
