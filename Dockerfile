@@ -91,46 +91,10 @@ RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
 
-# Install Gradle
-#RUN wget -q $GRADLE_URL -O gradle.zip \
-# && unzip gradle.zip \
-# && mv gradle-4.5.1 gradle \
-## && rm gradle.zip \
-# && mkdir /root/.gradle
-
-# Support Gradle
-#ENV GRADLE_HOME /opt/gradle
-#ENV PATH="${PATH}:${GRADLE_HOME}/bin"
-ENV JAVA_OPTS "-Xms512m -Xmx1536m"
-RUN echo "PATH: $PATH"
-#RUN echo `which gradle`
-#ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
-
-#ENV PATH="/opt/gradle/bin:${PATH}"
-
-RUN apt-get update && apt-get -y install gradle
-
 # Install Cordova and other useful globals
 RUN npm update && \
     npm install -g cordova@8.0.0 && \
     npm install -g phantomjs-prebuilt --unsafe-perm
-
-ADD client/config.xml /tangerine/client/config.xml
-ADD client/hooks /tangerine/client/hooks
-ADD client/res /tangerine/client/res
-ADD client/www /tangerine/client/www
-
-WORKDIR /tangerine/client
-
-RUN cordova platform add android@7.0.0
-RUN cordova plugin add cordova-plugin-whitelist --save
-RUN cordova plugin add cordova-plugin-geolocation --save
-RUN cordova plugin add cordova-plugin-camera --save
-RUN cordova plugin add cordova-plugin-file --save
-RUN cordova plugin add cordova-android-support-gradle-release --save
-RUN cordova plugin add cordova-hot-code-push-plugin --save
-
-WORKDIR /opt
 
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
@@ -138,8 +102,6 @@ RUN wget -q $GRADLE_URL -O gradle.zip \
  && mv gradle-4.5.1 gradle \
 # && rm gradle.zip \
  && mkdir /root/.gradle
-
-RUN apt-get -y remove gradle
 
 # Support Gradle
 ENV GRADLE_HOME /opt/gradle
@@ -149,11 +111,25 @@ RUN echo "PATH: $PATH"
 RUN echo `which gradle`
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
-#ENV PATH="/opt/gradle/bin:${PATH}"
+ADD client/config.xml /tangerine/client/config.xml
+ADD client/hooks /tangerine/client/hooks
+ADD client/res /tangerine/client/res
+ADD client/www /tangerine/client/www
+
+RUN mkdir /.tmp-apk
+ADD client /.tmp-apk/
+WORKDIR /.tmp-apk
+
+RUN cordova platform add android@7.0.0
+RUN cordova plugin add cordova-plugin-whitelist --save
+RUN cordova plugin add cordova-plugin-geolocation --save
+RUN cordova plugin add cordova-plugin-camera --save
+RUN cordova plugin add cordova-plugin-file --save
+RUN cordova plugin add cordova-android-support-gradle-release --save
+RUN cordova plugin add cordova-hot-code-push-plugin --save
+RUN cordova build
 
 WORKDIR /tangerine/client
-
-RUN cordova build
 
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
