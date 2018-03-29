@@ -7,7 +7,7 @@
     <author email="ict-admin@rti.org" href="github.com/Tangerine-Community/Tangerine">
         Tangerine dream team
     </author>
-    <content src="index.html" />
+    <content src="shell/index.html" />
     <icon src="res/icon.png" />
     <allow-navigation href="tangerinecentral.org" />
     <allow-intent href="*" />
