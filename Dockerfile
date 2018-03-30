@@ -118,14 +118,10 @@ RUN echo "PATH: $PATH"
 RUN echo `which gradle`
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
-ADD client/config.xml /tangerine/client/config.xml
-ADD client/hooks /tangerine/client/hooks
-ADD client/res /tangerine/client/res
-ADD client/www /tangerine/client/www
+RUN mkdir -p /tangerine/client/builds/apk
 
-RUN mkdir /cordova_base
-ADD client /cordova_base/
-WORKDIR /cordova_base
+ADD cordova /tangerine/client/builds/apk/
+WORKDIR /tangerine/client/builds/apk
 
 RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
