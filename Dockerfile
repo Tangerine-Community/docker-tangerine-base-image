@@ -83,10 +83,17 @@ RUN echo 84831b9409646a918e30573bab4c9c91346d8abd > $ANDROID_HOME/licenses/andro
 
 RUN sdkmanager "tools" "platform-tools"
 RUN sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
+## Android 8
+RUN sdkmanager "platforms;android-27" "platforms;android-26"
+## Android 7 and 6
 RUN sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
+## Android 5
 RUN sdkmanager "platforms;android-22" "platforms;android-21"
-#RUN sdkmanager "platforms;android-22" "platforms;android-21" "platforms;android-20" "platforms;android-19"
-#RUN sdkmanager "platforms;android-18" "platforms;android-17" "platforms;android-16" "platforms;android-15"
+## The next two lines provide Android 4 compatability to Jellybean (4.1)
+## Crosswalk does not support Ice Cream Sandwich (4.0)
+RUN sdkmanager "platforms;android-20" "platforms;android-19"
+RUN sdkmanager "platforms;android-18" "platforms;android-17" "platforms;android-16"
+## Mavien libs for Gradle
 RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
