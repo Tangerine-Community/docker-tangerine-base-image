@@ -116,9 +116,9 @@ ADD client/hooks /tangerine/client/hooks
 ADD client/res /tangerine/client/res
 ADD client/www /tangerine/client/www
 
-RUN mkdir /.tmp-apk
-ADD client /.tmp-apk/
-WORKDIR /.tmp-apk
+RUN mkdir /cordova_base
+ADD client /cordova_base/
+WORKDIR /cordova_base
 
 RUN cordova platform add android@7.0.0
 RUN cordova plugin add cordova-plugin-whitelist --save
