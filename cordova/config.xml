@@ -15,4 +15,10 @@
     <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
     <preference name="xwalkMode" value="embedded" />
     <preference name="xwalkMultipleApk" value="false" />
+    <chcp>
+        <config-file url="CHCP_URL"/>
+        <native-interface version="1" />
+        <auto-download enabled="false" />
+        <auto-install enabled="false" />
+    </chcp>
 </widget>
