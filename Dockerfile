@@ -5,7 +5,7 @@ ENV TERM linux
 
 RUN apt-get update && apt-get -y install \
     software-properties-common \
-    bzip2 unzip \
+    bzip2 unzip zip \
     openssh-client \
     curl \
     wget \
@@ -13,25 +13,7 @@ RUN apt-get update && apt-get -y install \
     nano \
     git \
     git-core \
-    apt-transport-https \
-    unzip
-
-#RUN echo deb http://http.debian.net/debian jessie-backports main >> /etc/apt/sources.list && \
-#    apt-get update && apt install -y -t jessie-backports  openjdk-8-jre-headless ca-certificates-java && \
-#    apt-get -y install openjdk-8-jre \
-#    openjdk-8-jdk && \
-#    update-alternatives --config java
-
-#RUN \
-#  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-##  add-apt-repository -y ppa:webupd8team/java && \
-#  apt-get update && \
-#  apt-get install -y oracle-java8-installer && \
-#  rm -rf /var/lib/apt/lists/* && \
-#  rm -rf /var/cache/oracle-jdk8-installer
-
-# Define commonly used JAVA_HOME variable
-#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+    apt-transport-https
 
 RUN \
     echo "===> add webupd8 repository..."  && \
