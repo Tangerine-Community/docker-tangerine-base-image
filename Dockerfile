@@ -52,7 +52,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   && apt-get -y install nodejs \
   && npm install -g pm2 \
   && npm install -g bower \
-  && npm install -g npm
+  && npm install -g npm \
+  && npm install -g nodemon
 
 # Install Couchdb
 RUN apt-get -y install software-properties-common \
