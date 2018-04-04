@@ -105,13 +105,13 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add android@7.0.0 && sleep 60
-RUN cordova plugin add cordova-plugin-whitelist --save && sleep 60
-RUN cordova plugin add cordova-plugin-geolocation --save && sleep 60
-RUN cordova plugin add cordova-plugin-camera --save && sleep 60
-RUN cordova plugin add cordova-plugin-file --save && sleep 60
-RUN cordova plugin add cordova-android-support-gradle-release --save && sleep 60
-RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 60
+RUN cordova platform add android@7.0.0 && sleep 120
+RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
+RUN cordova plugin add cordova-plugin-geolocation --save && sleep 120
+RUN cordova plugin add cordova-plugin-camera --save && sleep 120
+RUN cordova plugin add cordova-plugin-file --save && sleep 120
+RUN cordova plugin add cordova-android-support-gradle-release --save && sleep 120
+RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
