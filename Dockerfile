@@ -1,4 +1,4 @@
-FROM node
+FROM node:10.16.0-stretch
 
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
