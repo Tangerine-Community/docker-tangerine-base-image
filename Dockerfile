@@ -20,9 +20,9 @@ RUN apt-get update && apt-get -y install \
 # Set up environment variables
 ENV SDK_HOME /opt/android-sdk
 ENV ANDROID_HOME /opt/android-sdk
-ENV SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+ENV SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.5.1-all.zip
-ENV ANDROID_BUILD_TOOLS_VERSION 27.0.3
+ENV ANDROID_BUILD_TOOLS_VERSION 29.0.0
 
 RUN echo "SDK_HOME: $SDK_HOME"
 RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
@@ -32,7 +32,7 @@ WORKDIR /opt
 RUN mkdir "$SDK_HOME" .android \
  && cd "$SDK_HOME" \
  && curl --silent -o sdk.zip $SDK_URL \
- && unzip sdk.zip \
+ && unzip -qq sdk.zip \
  && rm sdk.zip \
  && yes | $SDK_HOME/tools/bin/sdkmanager --licenses
 
@@ -44,31 +44,31 @@ RUN echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > $ANDROID_HOME/licenses/andro
 RUN echo d56f5187479451eabf01fb78af6dfcb131a6481e >> $ANDROID_HOME/licenses/android-sdk-license
 RUN echo 84831b9409646a918e30573bab4c9c91346d8abd > $ANDROID_HOME/licenses/android-sdk-preview-license
 
-RUN sdkmanager "tools" "platform-tools"
-RUN sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
-## Android 8
-RUN sdkmanager "platforms;android-27" "platforms;android-26"
-## Android 7 and 6
-RUN sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "tools" "platform-tools"
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
 ## Android 5
-RUN sdkmanager "platforms;android-22" "platforms;android-21"
-## The next two lines provide Android 4 compatability to Jellybean (4.1)
-## Crosswalk does not support Ice Cream Sandwich (4.0)
-RUN sdkmanager "platforms;android-20" "platforms;android-19"
-RUN sdkmanager "platforms;android-18" "platforms;android-17" "platforms;android-16"
-## Mavien libs for Gradle
-RUN sdkmanager "extras;android;m2repository" "extras;google;m2repository"
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-22" "platforms;android-21"
+## Android 6 and 7
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
+## Android 8
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-27" "platforms;android-26"
+## Android 9
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-28"
 
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-26"
+## Mavien libs for Gradle
+RUN echo y | $SDK_HOME/tools/bin/sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova@8.0.0 && \
-    npm install -g phantomjs-prebuilt --unsafe-perm
+    npm install -g cordova@8.0.0
+
+# Install phantomjs - its download mirror can be tempermental so we use a specific mirror
+RUN npm update && \
+    npm install -g phantomjs-prebuilt --unsafe-perm --phantomjs_cdnurl=https://bitbucket.org/ariya/phantomjs/downloads
 
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
- && unzip gradle.zip \
+ && unzip -qq gradle.zip \
  && mv gradle-4.5.1 gradle \
 # && rm gradle.zip \
  && mkdir /root/.gradle
@@ -93,6 +93,7 @@ RUN cordova plugin add cordova-plugin-camera --save && sleep 120
 RUN cordova plugin add cordova-plugin-file --save && sleep 120
 RUN cordova plugin add cordova-android-support-gradle-release --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
+RUN cordova plugin add https://github.com/Tangerine-Community/TangyP2PPlugin --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
