@@ -3,17 +3,27 @@ FROM node:10.16.0-stretch
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
 
+# Doing this in a separate stage due to cdn errors.
 RUN apt-get update && apt-get -y install \
-    software-properties-common \
+    software-properties-common
+
+# Doing this in a separate stage due to cdn errors.
+RUN apt-get update && apt-get -y install \
     bzip2 unzip zip \
     openssh-client \
     curl \
     wget \
     vim \
-    nano \
+    nano
+
+# Doing this in a separate stage due to cdn errors.
+RUN apt-get update && apt-get -y install \
     git \
     git-core \
-    apt-transport-https \
+    apt-transport-https
+
+# Doing this in a separate stage due to cdn errors.
+RUN apt-get update && apt-get -y install \
     openjdk-8-jdk
 
 # Install Android SDK
@@ -21,7 +31,7 @@ RUN apt-get update && apt-get -y install \
 ENV SDK_HOME /opt/android-sdk
 ENV ANDROID_HOME /opt/android-sdk
 ENV SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.5.1-all.zip
+ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.10.1-all.zip
 ENV ANDROID_BUILD_TOOLS_VERSION 29.0.0
 
 RUN echo "SDK_HOME: $SDK_HOME"
@@ -69,7 +79,7 @@ RUN npm update && \
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
  && unzip -qq gradle.zip \
- && mv gradle-4.5.1 gradle \
+ && mv gradle-4.10.1 gradle \
 # && rm gradle.zip \
  && mkdir /root/.gradle
 
@@ -86,14 +96,14 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add android@7.0.0 && sleep 120
+RUN cordova platform add android@8 && sleep 120
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
 RUN cordova plugin add cordova-plugin-geolocation --save && sleep 120
 RUN cordova plugin add cordova-plugin-camera --save && sleep 120
 RUN cordova plugin add cordova-plugin-file --save && sleep 120
-RUN cordova plugin add cordova-android-support-gradle-release --save && sleep 120
+RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
-RUN cordova plugin add https://github.com/Tangerine-Community/TangyP2PPlugin --save && sleep 120
+RUN cordova plugin add tangy-p2p-plugin --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
