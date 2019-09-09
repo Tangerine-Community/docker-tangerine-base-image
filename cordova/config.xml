@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget xmlns:android="http://schemas.android.com/apk/res/android" id="org.rti.tangerine" version="0.0.1" xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0" >
+    <name>Tangerine</name>
+    <description>
+        Mobile data collection system.
+    </description>
+    <author email="ict-admin@rti.org" href="github.com/Tangerine-Community/Tangerine">
+        Tangerine dream team
+    </author>
+    <content src="shell/index.html" />
+    <icon src="res/icon.png" />
+    <allow-navigation href="tangerinecentral.org" />
+    <allow-intent href="*" />
+    <access origin="*" />
+    <chcp>
+        <config-file url="CHCP_URL"/>
+        <native-interface version="1" />
+        <auto-download enabled="false" />
+        <auto-install enabled="false" />
+    </chcp>
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+    <config-file parent="/*" target="AndroidManifest.xml">
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    </config-file>
+</widget>
