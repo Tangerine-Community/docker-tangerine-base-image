@@ -104,6 +104,7 @@ RUN cordova plugin add cordova-plugin-file --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add tangy-p2p-plugin --save && sleep 120
+RUN cordova plugin add cordova-plugin-qrscanner --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
