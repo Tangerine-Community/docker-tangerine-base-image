@@ -104,6 +104,7 @@ RUN cordova plugin add cordova-plugin-file --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections --save && sleep 120
+RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
