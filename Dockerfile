@@ -106,6 +106,7 @@ RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
 RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
+RUN cordova plugin add cordova-sqlcipher-adapter --save && sleep 120
 RUN cordova build
 
 WORKDIR /tangerine/client
