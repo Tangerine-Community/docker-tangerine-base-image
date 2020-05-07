@@ -7,5 +7,11 @@ See CHANGELOG.md for more information.
 ## Building
 
 ```
-docker build -t tangerine/docker-tangerine-base-image:v3 .
+docker build -t tangerine/docker-tangerine-base-image:TAGNAME .
 ```
+
+## Deployment
+
+Please follow the [Release Instructions](RELEASE_INSTRUCTIONS.md) for deployments. 
+
+
