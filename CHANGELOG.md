@@ -1,3 +1,6 @@
+# v3.5.0-rc01
+Added test version of cordova-sqlite-demo-plugin and related dependency.
+
 # Repository change
 We've made a change in how this repository works. The default branch used to be v3, and the master branch a copy of the v2 branch. We have now copied v3 to master and set the default to be master. 
 
