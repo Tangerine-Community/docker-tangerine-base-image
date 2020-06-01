@@ -1,4 +1,4 @@
-FROM node:10.16.0-stretch
+FROM node:12.16.3-stretch
 
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
@@ -28,25 +28,30 @@ RUN apt-get update && apt-get -y install \
 
 # Install Android SDK
 # Set up environment variables
-ENV SDK_HOME /opt/android-sdk
 ENV ANDROID_HOME /opt/android-sdk
-ENV SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-4.10.1-all.zip
-ENV ANDROID_BUILD_TOOLS_VERSION 29.0.0
+ENV CMDLINE_TOOLS_URL https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
+ENV GRADLE_URL https://services.gradle.org/distributions/gradle-5.4.1-all.zip
+ENV API_LEVEL=29 \
+    ANDROID_BUILD_TOOLS_VERSION=29.0.3
 
-RUN echo "SDK_HOME: $SDK_HOME"
+RUN echo "ANDROID_HOME: $ANDROID_HOME"
 RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
 
 WORKDIR /opt
-# Download Android SDK
-RUN mkdir "$SDK_HOME" .android \
- && cd "$SDK_HOME" \
- && curl --silent -o sdk.zip $SDK_URL \
- && unzip -qq sdk.zip \
- && rm sdk.zip \
- && yes | $SDK_HOME/tools/bin/sdkmanager --licenses
 
-ENV PATH="${SDK_HOME}/tools:${SDK_HOME}/tools/bin:${SDK_HOME}/platform-tools:${PATH}"
+ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
+    PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/tools:${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools
+    
+# Download Android SDK
+RUN mkdir "$ANDROID_HOME" .android \
+    && cd "$ANDROID_HOME" \
+    && mkdir cmdline-tools \
+    && curl -o cmdline-tools/commandlinetools.zip $CMDLINE_TOOLS_URL \
+    && unzip cmdline-tools/commandlinetools.zip -d cmdline-tools \
+    && rm cmdline-tools/commandlinetools.zip
+
+# Accept all licenses
+RUN yes | sdkmanager --licenses
 
 RUN touch /root/.android/repositories.cfg
 
@@ -54,32 +59,28 @@ RUN echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > $ANDROID_HOME/licenses/andro
 RUN echo d56f5187479451eabf01fb78af6dfcb131a6481e >> $ANDROID_HOME/licenses/android-sdk-license
 RUN echo 84831b9409646a918e30573bab4c9c91346d8abd > $ANDROID_HOME/licenses/android-sdk-preview-license
 
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "tools" "platform-tools"
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
+RUN echo y | sdkmanager "tools" "platform-tools"
+RUN echo y | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
 ## Android 5
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-22" "platforms;android-21"
+RUN echo y | sdkmanager "platforms;android-22" "platforms;android-21"
 ## Android 6 and 7
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
+RUN echo y | sdkmanager "platforms;android-25" "platforms;android-24" "platforms;android-23"
 ## Android 8
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-27" "platforms;android-26"
-## Android 9
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "platforms;android-28"
+RUN echo y | sdkmanager "platforms;android-27" "platforms;android-26"
+## Android 10 and 9
+RUN echo y | sdkmanager "platforms;android-${API_LEVEL}" "platforms;android-28" 
 
 ## Mavien libs for Gradle
-RUN echo y | $SDK_HOME/tools/bin/sdkmanager "extras;android;m2repository" "extras;google;m2repository"
+RUN echo y | sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova@8.0.0
-
-# Install phantomjs - its download mirror can be tempermental so we use a specific mirror
-RUN npm update && \
-    npm install -g phantomjs-prebuilt --unsafe-perm --phantomjs_cdnurl=https://bitbucket.org/ariya/phantomjs/downloads
+    npm install -g cordova
 
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
  && unzip -qq gradle.zip \
- && mv gradle-4.10.1 gradle \
+ && mv gradle-5.4.1 gradle \
 # && rm gradle.zip \
  && mkdir /root/.gradle
 
@@ -96,17 +97,20 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add android@8 && sleep 120
+RUN cordova platform add github:brodybits/cordova-android#adjust-max-payload-wip0002 && sleep 120
+
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
-RUN cordova plugin add cordova-plugin-geolocation --save && sleep 120
-RUN cordova plugin add cordova-plugin-camera --save && sleep 120
-RUN cordova plugin add cordova-plugin-file --save && sleep 120
+# TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
+# So, remove the specific @ versions when this issue has been resolved.
+RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 120
+RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 120
+RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
 RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
-RUN cordova plugin add https://github.com/chrisekelley/cordova-sqlite-demo-plugin --save && sleep 120
+RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free-build-unstable#dist-build-0001-0001c1 --save && sleep 120
 RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 120
 RUN cordova build
 
