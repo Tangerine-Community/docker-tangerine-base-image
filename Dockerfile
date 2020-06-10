@@ -97,7 +97,7 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add github:brodybits/cordova-android#adjust-max-payload-wip0002 && sleep 120
+RUN cordova platform add github:apache/cordova-android && sleep 120
 
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
 # TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
