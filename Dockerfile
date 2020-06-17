@@ -110,7 +110,7 @@ RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
 RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
-RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free-build-unstable#dist-build-0001-0001c1 --save && sleep 120
+RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free-unstable-0x#build-2020-06-17-01 --save && sleep 120
 RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 120
 RUN cordova build
 
