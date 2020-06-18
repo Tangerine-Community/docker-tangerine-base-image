@@ -30,7 +30,7 @@ RUN apt-get update && apt-get -y install \
 # Set up environment variables
 ENV ANDROID_HOME /opt/android-sdk
 ENV CMDLINE_TOOLS_URL https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-5.4.1-all.zip
+ENV GRADLE_URL https://services.gradle.org/distributions/gradle-6.5-all.zip
 ENV API_LEVEL=29 \
     ANDROID_BUILD_TOOLS_VERSION=29.0.3
 
@@ -80,7 +80,7 @@ RUN npm update && \
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
  && unzip -qq gradle.zip \
- && mv gradle-5.4.1 gradle \
+ && mv gradle-6.5 gradle \
 # && rm gradle.zip \
  && mkdir /root/.gradle
 
