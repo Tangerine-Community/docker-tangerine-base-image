@@ -100,17 +100,15 @@ WORKDIR /tangerine/client/builds/apk
 RUN cordova platform add github:apache/cordova-android && sleep 120
 
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
-# TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
-# So, remove the specific @ versions when this issue has been resolved.
-RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 120
-RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 120
-RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 120
+RUN cordova plugin add cordova-plugin-geolocation --save && sleep 120
+RUN cordova plugin add cordova-plugin-camera --save && sleep 120
+RUN cordova plugin add cordova-plugin-file --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
 RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
-RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free-unstable-0x#build-2020-06-17-01 --save && sleep 120
+RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-no-background-2020-07-15 --save && sleep 120
 RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 120
 RUN cordova build
 
