@@ -1,3 +1,7 @@
+# v3.5.1
+Updated Sqlite plugin - no background processing. 
+Removed version numbers of some plugins.
+
 # v3.5.0-rc01
 Added test version of cordova-sqlite-demo-plugin and related dependency.
 
