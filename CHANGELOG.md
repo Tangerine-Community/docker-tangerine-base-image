@@ -1,3 +1,8 @@
+# v3.5.2
+Brought back version numbers of some plugins - cordova 9 still uses -dev in version, which screws up version comparison.
+
+TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
+
 # v3.5.1
 Updated Sqlite plugin - no background processing. 
 Removed version numbers of some plugins.

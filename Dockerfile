@@ -100,9 +100,11 @@ WORKDIR /tangerine/client/builds/apk
 RUN cordova platform add github:apache/cordova-android && sleep 120
 
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
-RUN cordova plugin add cordova-plugin-geolocation --save && sleep 120
-RUN cordova plugin add cordova-plugin-camera --save && sleep 120
-RUN cordova plugin add cordova-plugin-file --save && sleep 120
+# TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
+# So, remove the specific @ versions when this issue has been resolved.
+RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 120
+RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 120
+RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
