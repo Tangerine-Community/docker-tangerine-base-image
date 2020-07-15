@@ -1,3 +1,6 @@
+# v3.5.3
+Added androidX plugin
+
 # v3.5.2
 Brought back version numbers of some plugins - cordova 9 still uses -dev in version, which screws up version comparison.
 
