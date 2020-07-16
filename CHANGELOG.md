@@ -1,3 +1,6 @@
+# v3.5.4
+Same sqlite plugin code, just an updated tag for it.
+
 # v3.5.3
 Added androidX plugin
 
