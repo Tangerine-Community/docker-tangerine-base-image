@@ -108,7 +108,7 @@ RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx --save && sleep 120
 RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
 RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
-RUN cordova plugin add cordova-plugin-nearby-connections@0.5.0 --save && sleep 120
+RUN cordova plugin add cordova-plugin-nearby-connections@0.6.0 --save && sleep 120
 RUN cordova plugin add cordova-sms-plugin --save && sleep 120
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
 RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 120
