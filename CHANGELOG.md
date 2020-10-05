@@ -1,3 +1,8 @@
+# v3.7.0
+Updated to node:14.12.0-stretch
+Updated Android API_LEVEL=30 and Android build tools to 30.0.2
+Updated Cordova to 10.0.0 and its corresponding android:targetSdkVersion="29"
+
 # v3.6.0
 Updated cordova-plugin-nearby-connections plugin for Android 10.
 

@@ -1,4 +1,4 @@
-FROM node:12.16.3-stretch
+FROM node:14.12.0-stretch
 
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
@@ -29,10 +29,11 @@ RUN apt-get update && apt-get -y install \
 # Install Android SDK
 # Set up environment variables
 ENV ANDROID_HOME /opt/android-sdk
-ENV CMDLINE_TOOLS_URL https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
+# https://developer.android.com/studio#command-tools
+ENV CMDLINE_TOOLS_URL https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
 ENV GRADLE_URL https://services.gradle.org/distributions/gradle-6.5-all.zip
-ENV API_LEVEL=29 \
-    ANDROID_BUILD_TOOLS_VERSION=29.0.3
+ENV API_LEVEL=30 \
+    ANDROID_BUILD_TOOLS_VERSION=30.0.2
 
 RUN echo "ANDROID_HOME: $ANDROID_HOME"
 RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
@@ -68,14 +69,16 @@ RUN echo y | sdkmanager "platforms;android-25" "platforms;android-24" "platforms
 ## Android 8
 RUN echo y | sdkmanager "platforms;android-27" "platforms;android-26"
 ## Android 10 and 9
-RUN echo y | sdkmanager "platforms;android-${API_LEVEL}" "platforms;android-28" 
+RUN echo y | sdkmanager "platforms;android-29" "platforms;android-28"
+## Android 11
+RUN echo y | sdkmanager "platforms;android-${API_LEVEL}"
 
 ## Mavien libs for Gradle
 RUN echo y | sdkmanager "extras;android;m2repository" "extras;google;m2repository"
 
 # Install Cordova and other useful globals
 RUN npm update && \
-    npm install -g cordova
+    npm install -g cordova@10.0.0
 
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
