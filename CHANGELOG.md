@@ -1,3 +1,5 @@
+# CHANGELOG
+
 # v3.7.0
 Updated to node:14.12.0-stretch
 Updated Android API_LEVEL=30 and Android build tools to 30.0.2
