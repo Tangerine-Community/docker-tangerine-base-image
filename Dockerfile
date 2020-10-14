@@ -95,12 +95,17 @@ RUN echo "PATH: $PATH"
 RUN echo `which gradle`
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
+RUN git clone -b 9.0.0 https://github.com/apache/cordova-android.git
+ENV CORDOVA_ANDROID_DIRECTORY="/opt/cordova-android"
+
+
 RUN mkdir -p /tangerine/client/builds/apk
 
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add github:apache/cordova-android && sleep 120
+#RUN cordova platform add github:apache/cordova-android && sleep 120
+RUN cordova platform add $CORDOVA_ANDROID_DIRECTORY --nosave && sleep 120
 
 RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
 # TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790

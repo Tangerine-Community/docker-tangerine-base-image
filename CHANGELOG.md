@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.7.1
+Saving the cordova platform version by git cloning cordova-android to /opt/cordova-android.
+
 # v3.7.0
 Updated to node:14.12.0-stretch
 Updated Android API_LEVEL=30 and Android build tools to 30.0.2
