@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.7.2
+Added `android:largeHeap="true"` to config.xml to enable larger memory use.
+
 # v3.7.1
 Saving the cordova platform version by git cloning cordova-android to /opt/cordova-android.
 

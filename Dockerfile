@@ -104,23 +104,23 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-#RUN cordova platform add github:apache/cordova-android && sleep 120
-RUN cordova platform add $CORDOVA_ANDROID_DIRECTORY --nosave && sleep 120
+#RUN cordova platform add github:apache/cordova-android && sleep 30
+RUN cordova platform add $CORDOVA_ANDROID_DIRECTORY --nosave && sleep 30
 
-RUN cordova plugin add cordova-plugin-whitelist --save && sleep 120
+RUN cordova plugin add cordova-plugin-whitelist --save && sleep 30
 # TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
 # So, remove the specific @ versions when this issue has been resolved.
-RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 120
-RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 120
-RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 120
-RUN cordova plugin add cordova-plugin-androidx --save && sleep 120
-RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 120
-RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 120
-RUN cordova plugin add cordova-plugin-nearby-connections@0.6.0 --save && sleep 120
-RUN cordova plugin add cordova-sms-plugin --save && sleep 120
-RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 120
-RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 120
-RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 120
+RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 30
+RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 30
+RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 30
+RUN cordova plugin add cordova-plugin-androidx --save && sleep 30
+RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 30
+RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 30
+RUN cordova plugin add cordova-plugin-nearby-connections@0.6.1 --save && sleep 30
+RUN cordova plugin add cordova-sms-plugin --save && sleep 30
+RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 30
+RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 30
+RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 30
 RUN cordova build 
 
 WORKDIR /tangerine/client
