@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.7.3
+Tweaked the edit-config property so that the new `android:largeHeap="true"` attribute will work. Also added Adaptive icons for Android.
+
 # v3.7.2
 Added `android:largeHeap="true"` to config.xml to enable larger memory use.
 

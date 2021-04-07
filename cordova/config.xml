@@ -9,7 +9,15 @@
         Tangerine dream team
     </author>
     <content src="shell/index.html" />
-    <icon src="res/icon.png" />
+    <platform name="android">
+        <resource-file src="res/values/colors.xml" target="/app/src/main/res/values/colors.xml" />
+        <icon background="@color/background" density="ldpi" foreground="res/icon/android/ldpi-foreground.png" />
+        <icon background="@color/background" density="mdpi" foreground="res/icon/android/mdpi-foreground.png" />
+        <icon background="@color/background" density="hdpi" foreground="res/icon/android/hdpi-foreground.png" />
+        <icon background="@color/background" density="xhdpi" foreground="res/icon/android/xhdpi-foreground.png" />
+        <icon background="@color/background" density="xxhdpi" foreground="res/icon/android/xxhdpi-foreground.png" />
+        <icon background="@color/background" density="xxxhdpi" foreground="res/icon/android/xxxhdpi-foreground.png" />
+    </platform>
     <allow-navigation href="tangerinecentral.org" />
     <allow-intent href="*" />
     <access origin="*" />
@@ -31,7 +39,6 @@
         <uses-permission android:name="android.permission.CAMERA"/>
     </config-file>
     <edit-config file="app/src/main/AndroidManifest.xml" mode="overwrite" target="/manifest/application">
-        <application android:largeHeap="true" />
-        <application android:requestLegacyExternalStorage="true" />
+        <application android:largeHeap="true" android:requestLegacyExternalStorage="true" />
     </edit-config>
 </widget>
