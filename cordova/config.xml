@@ -39,6 +39,6 @@
         <uses-permission android:name="android.permission.CAMERA"/>
     </config-file>
     <edit-config file="app/src/main/AndroidManifest.xml" mode="overwrite" target="/manifest/application">
-        <application android:largeHeap="true" android:requestLegacyExternalStorage="true" />
+        <application android:hardwareAccelerated="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:supportsRtl="true" android:largeHeap="true" android:requestLegacyExternalStorage="true" />
     </edit-config>
 </widget>

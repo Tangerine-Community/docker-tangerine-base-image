@@ -6,6 +6,11 @@ This branch is for Tangerine v3 deployments.
 
 See CHANGELOG.md for more information.
 
+## Configuration
+
+Be aware that the use of `edit-config` property in config.xml hard-codes application attributes that are inserted into the AndroidManifest.xml. 
+If you have plugins that modify the application property, you may wish to change the `edit-config` attributes.
+
 ## Building
 
 ```
