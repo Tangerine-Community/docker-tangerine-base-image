@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.7.5
+- Added android.permission.MODIFY_AUDIO_SETTINGS to config.xml
+
 # v3.7.4
 - Added android.permission.RECORD_AUDIO to config.xml
 
