@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.7.4
+- Added android.permission.RECORD_AUDIO to config.xml
+
 # v3.7.3
 - Tweaked the edit-config property so that the new `android:largeHeap="true"` attribute will work. Also added Adaptive icons for Android.
 - Update to node:14.16.1-stretch
