@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# v3.8.0
+- Base image is now node 18, using Debian 11 (Bullseye).
+
 # v3.7.4
 - Added android.permission.RECORD_AUDIO to config.xml
 - Added android.permission.MODIFY_AUDIO_SETTINGS to config.xml

@@ -1,4 +1,4 @@
-FROM node:14.16.1-stretch
+FROM node:18-bullseye
 
 # Same as "export TERM=dumb"; prevents error "Could not open terminal for stdout: $TERM not set"
 ENV TERM linux
@@ -24,7 +24,7 @@ RUN apt-get update && apt-get -y install \
 
 # Doing this in a separate stage due to cdn errors.
 RUN apt-get update && apt-get -y install \
-    openjdk-8-jdk
+    openjdk-11-jdk
 
 # Install Android SDK
 # Set up environment variables
@@ -95,33 +95,41 @@ RUN echo "PATH: $PATH"
 RUN echo `which gradle`
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
+RUN echo "pwd : $PWD"
 RUN git clone -b 9.0.0 https://github.com/apache/cordova-android.git
 ENV CORDOVA_ANDROID_DIRECTORY="/opt/cordova-android"
-
 
 RUN mkdir -p /tangerine/client/builds/apk
 
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-#RUN cordova platform add github:apache/cordova-android && sleep 30
-RUN cordova platform add $CORDOVA_ANDROID_DIRECTORY --nosave && sleep 30
+RUN pwd && ls
 
-RUN cordova plugin add cordova-plugin-whitelist --save && sleep 30
+RUN cordova platform add android@9.0.0 && sleep 10
+##RUN cordova platform add $CORDOVA_ANDROID_DIRECTORY --nosave && sleep 30
+
+RUN cordova plugin add cordova-plugin-whitelist --save && sleep 5
 # TODO: awaiting fix for -dev versions of cordova-android: https://github.com/apache/cordova-lib/issues/790
 # So, remove the specific @ versions when this issue has been resolved.
-RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 30
-RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 30
-RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 30
-RUN cordova plugin add cordova-plugin-androidx --save && sleep 30
-RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 30
-RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 30
-RUN cordova plugin add cordova-plugin-nearby-connections@0.6.1 --save && sleep 30
-RUN cordova plugin add cordova-sms-plugin --save && sleep 30
-RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 30
-RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 30
-RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 30
-RUN cordova build 
+RUN cordova plugin add cordova-plugin-geolocation@4.0.2 --save && sleep 5
+RUN cordova plugin add cordova-plugin-camera@4.1.0 --save && sleep 5
+RUN cordova plugin add cordova-plugin-file@6.0.2 --save && sleep 5
+RUN cordova plugin add cordova-plugin-androidx --save && sleep 5
+RUN cordova plugin add cordova-plugin-androidx-adapter --save && sleep 5
+RUN cordova plugin add cordova-hot-code-push-plugin --save && sleep 5
+RUN cordova plugin add cordova-plugin-nearby-connections@0.6.1 --save && sleep 5
+RUN cordova plugin add cordova-sms-plugin --save && sleep 5
+RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 5
+RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 5
+RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 5
+
+#RUN export JAVA_HOME="$(dirname $(dirname $(readlink -f $(which java))))"
+RUN echo "JAVA_HOME : $(dirname $(dirname $(readlink -f $(which java))))"
+#ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+ENV JAVA_HOME $(dirname $(dirname $(readlink -f $(which java))))
+
+RUN cordova build
 
 WORKDIR /tangerine/client
 
