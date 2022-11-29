@@ -27,7 +27,7 @@
         <auto-download enabled="false" />
         <auto-install enabled="false" />
     </chcp>
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="32" />
     <config-file parent="/*" target="AndroidManifest.xml">
         <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
