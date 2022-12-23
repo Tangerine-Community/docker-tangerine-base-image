@@ -109,7 +109,7 @@ RUN mkdir -p /tangerine/client/builds/apk
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add android@11.0.0 && sleep 5
+RUN cordova platform add android@10 && sleep 5
 
 RUN cordova plugin add cordova-plugin-geolocation@4.1.0 --save && sleep 5
 RUN cordova plugin add cordova-plugin-camera@6.0.0 --save && sleep 5
