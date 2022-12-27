@@ -31,9 +31,9 @@ RUN apt-get update && apt-get -y install \
 ENV ANDROID_HOME /opt/android-sdk
 # https://developer.android.com/studio#command-tools
 ENV CMDLINE_TOOLS_URL https://dl.google.com/android/repository/commandlinetools-linux-9123335_latest.zip
-ENV GRADLE_URL https://services.gradle.org/distributions/gradle-7.6-all.zip
+ENV GRADLE_URL https://services.gradle.org/distributions/gradle-7.3.3-all.zip
 ENV API_LEVEL=32 \
-    ANDROID_BUILD_TOOLS_VERSION=33.0.1
+    ANDROID_BUILD_TOOLS_VERSION=32.0.0
 
 RUN echo "ANDROID_HOME: $ANDROID_HOME"
 RUN echo "ANDROID_BUILD_TOOLS_VERSION: $ANDROID_BUILD_TOOLS_VERSION"
@@ -91,8 +91,7 @@ RUN npm update && \
 # Install Gradle
 RUN wget -q $GRADLE_URL -O gradle.zip \
  && unzip -qq gradle.zip \
- && mv gradle-7.6 gradle \
-# && rm gradle.zip \
+ && mv gradle-7.3.3 gradle \
  && mkdir /root/.gradle
 
 # Support Gradle
@@ -101,15 +100,12 @@ ENV PATH="${PATH}:${GRADLE_HOME}/bin"
 ENV JAVA_OPTS "-Xms512m -Xmx1536m"
 ENV CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///opt/gradle.zip
 
-RUN git clone -b 11.0.0 https://github.com/apache/cordova-android.git
-ENV CORDOVA_ANDROID_DIRECTORY="/opt/cordova-android"
-
 RUN mkdir -p /tangerine/client/builds/apk
 
 ADD cordova /tangerine/client/builds/apk/
 WORKDIR /tangerine/client/builds/apk
 
-RUN cordova platform add android@10 && sleep 5
+RUN cordova platform add android@11 && sleep 5
 
 RUN cordova plugin add cordova-plugin-geolocation@4.1.0 --save && sleep 5
 RUN cordova plugin add cordova-plugin-camera@6.0.0 --save && sleep 5
