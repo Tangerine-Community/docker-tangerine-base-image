@@ -22,7 +22,10 @@ RUN apt-get update && apt-get -y install \
     git-core \
     apt-transport-https
 
-# Doing this in a separate stage due to cdn errors.
+# python2 can be used to build cordova-hot-code-push-cli
+#RUN apt-get update && apt-get -y install python2
+#RUN npm config set python /usr/bin/python2
+
 RUN apt-get update && apt-get -y install \
     openjdk-11-jdk
 
