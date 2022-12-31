@@ -121,6 +121,7 @@ RUN cordova plugin add cordova-sms-plugin --save && sleep 5
 RUN cordova plugin add cordova-plugin-android-permissions --save && sleep 5
 RUN cordova plugin add github:brodybits/cordova-plugin-sqlcipher-crypto-batch-connection-manager-core-pro-free#unstable-build-2020-07-15-01 --save && sleep 5
 RUN cordova plugin add cordova-sqlite-storage-file --save && sleep 5
+RUN cordova plugin add cordova-plugin-x-socialsharing --save && sleep 5
 
 RUN echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(type -P java))))" > /etc/profile.d/javahome.sh
 
