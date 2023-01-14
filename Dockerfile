@@ -65,10 +65,8 @@ RUN touch /root/.android/repositories.cfg
 
 RUN echo "uname: $(uname -m)"
 
-# Emulator and Platform tools
-RUN yes | sdkmanager "emulator" "platform-tools"
+RUN yes | sdkmanager "platform-tools"
 
-RUN echo y | sdkmanager "tools"
 RUN echo y | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
 ## Android 5
 RUN echo y | sdkmanager "platforms;android-21" "platforms;android-22"
