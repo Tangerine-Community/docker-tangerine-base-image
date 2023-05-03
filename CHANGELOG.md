@@ -1,6 +1,7 @@
 # CHANGELOG
 
 # v4.0.0
+- added cordova-plugin-ml-text plugin
 - added cordova-plugin-x-socialsharing plugin and READ_EXTERNAL_STORAGE permission
 - The "AndroidInsecureFileModeEnabled" preference enables the continued use of the file:// scheme.
 - Set ANDROID_BUILD_TOOLS_VERSION=32.0.0 and gradle-7.3.3
