@@ -23,8 +23,13 @@ RUN apt-get update && apt-get -y install \
     apt-transport-https
 
 # Doing this in a separate stage due to cdn errors.
-RUN apt-get update && apt-get -y install \
-    openjdk-8-jdk
+#RUN apt-get update && apt-get -y install \
+#    openjdk-8-jdk
+
+# Install AdoptOpenJDK 8 - https://stackoverflow.com/a/59436618
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
+RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+RUN apt-get update && sudo apt-get install adoptopenjdk-8-hotspot
 
 # Install Android SDK
 # Set up environment variables
