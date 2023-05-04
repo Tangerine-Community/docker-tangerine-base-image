@@ -29,7 +29,7 @@ RUN apt-get update && apt-get -y install \
 # Install AdoptOpenJDK 8 - https://stackoverflow.com/a/59436618
 RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-RUN apt-get update && apt-get install adoptopenjdk-8-hotspot
+RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
 
 # Install Android SDK
 # Set up environment variables
