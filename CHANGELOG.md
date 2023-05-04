@@ -1,6 +1,7 @@
 # CHANGELOG
 
 # v3.7.4
+- Added cordova-plugin-ml-text plugin
 - Added android.permission.RECORD_AUDIO to config.xml
 - Added android.permission.MODIFY_AUDIO_SETTINGS to config.xml
 
