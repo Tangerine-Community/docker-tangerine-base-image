@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# v4.0.0
+- added cordova-plugin-ml-text plugin
+- added cordova-plugin-x-socialsharing plugin and READ_EXTERNAL_STORAGE permission
+- The "AndroidInsecureFileModeEnabled" preference enables the continued use of the file:// scheme.
+- Set ANDROID_BUILD_TOOLS_VERSION=32.0.0 and gradle-7.3.3
+
+# v3.8.0
+- Base image is now node 18, using Debian 11 (Bullseye).
+
 # v3.7.4
 - Added android.permission.RECORD_AUDIO to config.xml
 - Added android.permission.MODIFY_AUDIO_SETTINGS to config.xml
