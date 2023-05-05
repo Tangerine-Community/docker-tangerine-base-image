@@ -14,6 +14,7 @@
 0. Checkout the release candidate tag and tag that commit with a stable version. ie. `git checkout v3.7.2-rc-2 && git tag v3.7.2 && git push origin v3.7.2`
 0. Pull the RC image, rename it, and push it. ie. `docker pull tangerine/docker-tangerine-base-image:v3.7.2-rc-2 && docker tag tangerine/docker-tangerine-base-image:v3.7.2-rc-2 tangerine/docker-tangerine-base-image:v3.7.2 && docker push tangerine/docker-tangerine-base-image:v3.7.2`
 0. Make release on Github using the same tag pushed up to Github.
+1. Make sure to cancel the workflow in GH Actions, since you manually pushed the rc out in the previous step.
 
 ## Optional - Manual steps for building and pushing an image
 1. Build your image: `docker build -t tangerine/docker-tangerine-base-image:TAGNAME .`
