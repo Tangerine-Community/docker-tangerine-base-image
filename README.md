@@ -2,7 +2,9 @@
 
 This is the base image for the Tangerine project. There are different branches for different types of instances; for example, the v2_node8 branch offers node8 support for v2.
 
-This branch is for Tangerine v3 deployments.
+3.x Releases are for Tangerine v3 deployments. The highest node version these releases support is v14.21.3. There will be errors if you try to upgrade node to v16 for Tangerine v3 deployments.
+
+4.x Releases are for Tangerine v4 deployments. These releases target node v18.
 
 See CHANGELOG.md for more information.
 

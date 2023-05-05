@@ -3,10 +3,12 @@
 ## Making a release-candidate:
 1. Make sure your local master branch is up to date and clean. `git fetch origin && git checkout master && git merge origin/master && git status`.
 2. Complete an entry in `CHANGELOG.md` for the release.
-3. Git commit with a git commit message of the same release number.
-4. Git tag with the same name as the release number - for example, v3.7.2-rc-1.
-5. Git push the master branch, git push the tag: git push origin --tags .  Tagging your build and then pushing the tag will trigger Docker cloud to build a container.
-6. Draft a new release on Github of the same tag name using that tag. Use the CHANGELOG notes.
+0. Go to the New Release Page on github (https://github.com/Tangerine-Community/Tangerine/releases/new).
+1. Set "Target" to the release branch branch.
+2. Set the "Tag version" to the version this release candidate is targeting with `-rc-` and the number appended. For example, if this was the third release candidate for v3.11.0, the tag would be `v3.11.0-rc-3`.
+3. Leave the "Release title" blank.
+4. Check the "This is a pre-release" checkbox.
+5. Click "Publish release".
 
 ## Making a stable release:
 0. Checkout the release candidate tag and tag that commit with a stable version. ie. `git checkout v3.7.2-rc-2 && git tag v3.7.2 && git push origin v3.7.2`
