@@ -27,9 +27,9 @@ RUN apt-get update && apt-get -y install \
 #    openjdk-8-jdk
 
 # Install AdoptOpenJDK 8 - https://stackoverflow.com/a/59436618
-RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
-RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
+RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
+RUN add-apt-repository --yes https://packages.adoptium.net/artifactory/deb
+RUN apt-get update && apt-get -y install temurin-8-jdk
 
 # Install Android SDK
 # Set up environment variables
