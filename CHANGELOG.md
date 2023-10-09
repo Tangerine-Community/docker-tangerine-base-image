@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# v3.8.0
+- Replaced adoptopenjdk.jfrog.io with packages.adoptium.net for jdk - the jfrog.io packages are no longer available.
+- Added cordova-plugin-x-socialsharing plugin.
+
 # v3.7.4
 - Switch to the buster debian distro from stretch.
 - Added cordova-plugin-ml-text plugin
