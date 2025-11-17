@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# v3.8.1
+
+- Bump to re-run install of jdk8 due to avoid issues on ubuntu24.
+
 # v3.8.0
 - Replaced adoptopenjdk.jfrog.io with packages.adoptium.net for jdk - the jfrog.io packages are no longer available.
 - Added cordova-plugin-x-socialsharing plugin.
